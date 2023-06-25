@@ -36,14 +36,14 @@ const userSchema=new mongoose.Schema({
     },
     role:{
         type:String,
-        required:true,
+        //required:true,
         enum:['customer','admin']
     },
     tokens:[
         {
             token:{
                 type:String,
-                required:true
+                //required:true
             }
         }
     ],
