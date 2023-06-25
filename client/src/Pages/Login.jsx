@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../Components/Layouts/Layout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import '../styles/signup.css'
@@ -10,24 +10,25 @@ const Login = () => {
     const [password,setPassword]=useState("")
     const [auth,setAuth]=useAuth()
     const navigate=useNavigate()
+    const location=useLocation()
   return (
     <Layout>
       <div className="form-container">
         <form onSubmit={async (e)=>{e.preventDefault()
         try {
           const role='customer'
-          const res=await axios.post(`http://localhost:5000/user/userLogin`,{email,password,role})
+          const res=await axios.post(`${process.env.REACT_APP_API}/user/userLogin`,{email,password,role})
           console.log(res)
           if(res.status===200)
           {
-          toast.success('Logged in Successfully')
+          toast.success('Logged in Successfully',{duration:5000})
           setAuth({
             ...auth,
             user:res.data.user,
             token:res.data.token
           })
           localStorage.setItem('auth',JSON.stringify(res.data))
-          navigate('/')
+          navigate(location.state||'/')
         }
           }
          catch (error) {

@@ -17,7 +17,7 @@ const Signup = () => {
         <form onSubmit={async (e)=>{e.preventDefault()
         try {
           const role='customer'
-          const res=await axios.post(`http://localhost:5000/user/newUser`,{username,email,password,mobile,address,role})
+          const res=await axios.post(`${process.env.REACT_APP_API}/user/newUser`,{username,email,password,mobile,address,role})
           console.log(res)
           if(res.status===200)
           {

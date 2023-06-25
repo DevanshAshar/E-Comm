@@ -7,6 +7,13 @@ const app=express()
 const User=require('../models/userSchema')
 const nodemailer=require('nodemailer')
 app.use(express.json()) 
+const auth=async(req,res)=>{
+    try {
+        res.status(200).json({userData})
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
 const newUser=async(req,res)=>{
     const {username, password, email, address, mobile}=req.body;
     if(!username || !password || !email || !address || !mobile )
@@ -40,10 +47,11 @@ const userLogin=async(req,res)=>{
             }
     } catch (error) {
         console.log(error.message)
-        res.status(400).send(error.message)
+        res.status(400).json({message:error.message})
     } 
 }
 module.exports={
     newUser,
-    userLogin
+    userLogin,
+    auth
 }

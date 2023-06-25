@@ -11,7 +11,7 @@ const Header = () => {
       token:''
     })
     localStorage.removeItem('auth')
-    toast.success('Logged out successfully')
+    toast.success('Logged out successfully',{duration:5000})
   }
   return (
     <>
