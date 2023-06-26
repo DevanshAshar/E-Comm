@@ -27,6 +27,8 @@
     background-color:purple;
     color: white;
     width:250px;
+    display: flex;
+    margin: 10px;
 }
 .form-container form button:hover{
     background-color:darkblue;

@@ -47,6 +47,8 @@ const userSchema=new mongoose.Schema({
             }
         }
     ],
+    otp: { type: Number },
+    otpExpire: { type: Number },
     cart:[{
         product:{
             prodName:{type:String},

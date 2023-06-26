@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import Login from './Pages/Login';
 import Dashboard from './Pages/Dashboard';
 import Private from './Components/Routes/Private';
+import VerifyOtp from './Pages/VerifyOtp';
+import NewPassword from './Pages/NewPassword';
 function App() {
   return (
     <>
@@ -16,6 +18,8 @@ function App() {
       </Route>
       <Route exact path='/signup' element={<Signup/>}/>
       <Route exact path='/login' element={<Login/>}/>
+      <Route exact path='/verifyOtp' element={<VerifyOtp/>}/>
+      <Route exact path='/newPass' element={<NewPassword/>}/>
       <Route exact path='/*' element={<Home/>}/>
     </Routes>
     </>

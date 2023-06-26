@@ -11,30 +11,45 @@ const Login = () => {
     const [auth,setAuth]=useAuth()
     const navigate=useNavigate()
     const location=useLocation()
+    const forgotPass=async(email)=>{
+        if(!email)
+        return toast.error("Enter registered email")
+        try {
+            const res=await axios.post(`${process.env.REACT_APP_API}/user/forgotPass`,{email})
+            if(res.status===200)
+            navigate('/verifyOtp',{state:email})
+        } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong")
+        }
+    }
+    const subm=async()=>{
+        try {
+            const role='customer'
+            const res=await axios.post(`${process.env.REACT_APP_API}/user/userLogin`,{email,password,role})
+            console.log(res)
+            if(res.status===200)
+            {
+            toast.success('Logged in Successfully',{duration:5000})
+            setAuth({
+              ...auth,
+              user:res.data.user,
+              token:res.data.token
+            })
+            localStorage.setItem('auth',JSON.stringify(res.data))
+            navigate(location.state||'/')
+          }
+            }
+           catch (error) {
+            console.log(error)
+            toast.error("Something went wrong")
+          }
+    }
   return (
     <Layout>
       <div className="form-container">
         <form onSubmit={async (e)=>{e.preventDefault()
-        try {
-          const role='customer'
-          const res=await axios.post(`${process.env.REACT_APP_API}/user/userLogin`,{email,password,role})
-          console.log(res)
-          if(res.status===200)
-          {
-          toast.success('Logged in Successfully',{duration:5000})
-          setAuth({
-            ...auth,
-            user:res.data.user,
-            token:res.data.token
-          })
-          localStorage.setItem('auth',JSON.stringify(res.data))
-          navigate(location.state||'/')
-        }
-          }
-         catch (error) {
-          console.log(error)
-          toast.error("Something went wrong")
-        }}}>
+        }}>
           <h1 style={{color:'purple'}} className="title">Login</h1>
           <div className="my-3">
             <input
@@ -56,8 +71,11 @@ const Login = () => {
               placeholder="Password"
             />
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button onClick={()=>subm()} className="btn btn-primary">
             Login
+          </button>
+          <button className="btn btn-primary" onClick={()=>forgotPass(email)}>
+            Forgot Password
           </button>
         </form>
       </div>
