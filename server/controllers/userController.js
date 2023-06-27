@@ -10,7 +10,7 @@ const nodemailer=require('nodemailer')
 app.use(express.json()) 
 const auth=async(req,res)=>{
     try {
-        res.status(200).json({userData})
+        res.status(200).json({user:userData})
     } catch (error) {
         res.status(400).json({message:error.message})
     }
@@ -29,15 +29,15 @@ const newUser=async(req,res)=>{
     }
 }
 const userLogin=async(req,res)=>{
-    const {email,password,role}=req.body
-    if(!email || !password || !role)
+    const {email,password}=req.body
+    if(!email || !password)
     return res.status(400).json({error:'Please Fill the Details'})
     try {
             const userData=await User.findOne({email:req.body.email})
             if(!userData)
             return res.status(400).json({error:'User not found'})
             const validPassword=await bcrypt.compare(req.body.password,userData.password)
-            if(!userData || !validPassword || userData.role!=req.body.role)
+            if(!userData || !validPassword)
             res.status(400).json({error:'Invalid credentials'})
             else
             {

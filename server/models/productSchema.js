@@ -21,26 +21,16 @@ const prodSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-    images:[
-        {
-            public_id:{
-                type:String,
-                required:true
-            },
-            url:{
-                type:String,
-                required:true
-            }
-        }
-    ],
-    seller:{
-        type:String,
-        required:true
-    },
-    sellerEmail:{
-        type:String,
-        required:true,
-        lowercase:true,
+    images:[{
+        data:Buffer,
+        contentType:String
+    }]
+    
+
+    ,
+    shipping:{
+        type:Boolean,
+        default:false
     },
     stock:{
         type:Number

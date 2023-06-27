@@ -1,0 +1,12 @@
+const express=require('express')
+const router=new express.Router()
+const multer=require('multer')
+const upload=multer({dest:'uploads/'})
+const formidable=require('express-formidable')
+const {newProduct, products, prodname, prodImage}=require('../controllers/productController')
+const authentication=require('../middleware/auth')
+router.post('/newProduct'/*,authentication.admin*/,newProduct)
+router.get('/allProducts',products)
+router.get('/prodname',prodname)
+router.get('/prodImage/:pid',prodImage)
+module.exports=router

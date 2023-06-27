@@ -10,6 +10,7 @@ const{newUser,
 router.post('/newUser',newUser)
 router.post('/userLogin',userLogin)
 router.get('/auth',authentication.verifyToken,auth)
+router.get('/adminAuth',authentication.admin,auth)
 router.post('/forgotPass', forgotPass);
 router.post('/verifyOtp', verifyOtp);
 router.post('/newPass', newPass);

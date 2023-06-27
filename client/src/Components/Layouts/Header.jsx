@@ -59,6 +59,11 @@ const Header = () => {
                   Logout
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to={`/dashboard/${auth?.user?.role==='admin'?'admin':'user'}/landing` }>
+                  Dashboard
+                </NavLink>
+              </li>
                 </>
                 )
               }

@@ -8,13 +8,26 @@ import Dashboard from './Pages/Dashboard';
 import Private from './Components/Routes/Private';
 import VerifyOtp from './Pages/VerifyOtp';
 import NewPassword from './Pages/NewPassword';
+import AdminRoute from './Components/Routes/AdminRoute';
+import AdminDashboard from './Pages/AdminDashboard';
+import CreateProduct from './Pages/CreateProduct';
+import AllUsers from './Pages/AllUsers';
+import Orders from './Pages/Orders';
+import Profile from './Pages/Profile';
 function App() {
   return (
     <>
     <Routes>
       <Route exact path='/' element={<Home/>}/>
-      <Route path="/dashboard" element={<Private/>}>
-      <Route path='' element={<Dashboard/>}/>
+      <Route path="/dashboard/user" element={<Private/>}>
+      <Route path='landing' element={<Dashboard/>}/>
+      <Route path='orders' element={<Orders/>}/>
+      <Route path='profile' element={<Profile/>}/>
+      </Route>
+      <Route path="/dashboard/admin" element={<AdminRoute/>}>
+      <Route path='landing' element={<AdminDashboard/>}/>
+      <Route path='addProduct' element={<CreateProduct/>}/>
+      <Route path='users' element={<AllUsers/>}/>
       </Route>
       <Route exact path='/signup' element={<Signup/>}/>
       <Route exact path='/login' element={<Login/>}/>

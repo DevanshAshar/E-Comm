@@ -25,8 +25,7 @@ const Login = () => {
     }
     const subm=async()=>{
         try {
-            const role='customer'
-            const res=await axios.post(`${process.env.REACT_APP_API}/user/userLogin`,{email,password,role})
+            const res=await axios.post(`${process.env.REACT_APP_API}/user/userLogin`,{email,password})
             console.log(res)
             if(res.status===200)
             {

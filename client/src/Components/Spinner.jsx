@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate,useLocation } from 'react-router-dom'
 const Spinner = () => {
-    const [count,setCount]=useState(5)
+    const [count,setCount]=useState(3)
     const navigate=useNavigate()
     const location=useLocation()
     useEffect(()=>{
@@ -16,7 +16,7 @@ const Spinner = () => {
   return (
     <>
     <div className="d-flex flex-column justify-content-center align-items-center" style={{height:'100vh'}}>
-        <h1 className='text-center'>Unauthorized!!Redirecting you to login in {count}</h1>
+        <h1 className='text-center'>Redirecting in {count}</h1>
   <div className="spinner-border" role="status">
     <span className="visually-hidden">Loading...</span>
   </div>
