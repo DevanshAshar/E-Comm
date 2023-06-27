@@ -14,8 +14,6 @@ const newProduct = async (req, res) => {
       const prod = new Product(req.fields);
 
       if (images) {
-        // if (Array.isArray(images)) {
-          // If multiple images are uploaded
           for (let i = 0; i < images.length; i++) {
             const image = images[i];
             console.log(i)
@@ -25,13 +23,6 @@ const newProduct = async (req, res) => {
               contentType: image.type,
             });
           }
-        // } else {
-        //   // If only a single image is uploaded
-        //   prod.images.push({
-        //     data: fs.readFileSync(images.path),
-        //     contentType: images.type,
-        //   });
-        // }
       }
   
       await prod.save();
@@ -43,7 +34,7 @@ const newProduct = async (req, res) => {
   };
   const products=async(req,res)=>{
     try {
-        let products=await Product.find({}).sort({createdAt:-1})
+        let products=await Product.find({}).select("-images").sort({createdAt:-1})
         res.send({message:'All Products',totalCount:products.length,products}).status(200)
     } catch (error) {
         res.status(400).json({message:error.message})
@@ -51,7 +42,7 @@ const newProduct = async (req, res) => {
 }
 const prodname=async(req,res)=>{
     try {
-        let data=await Product.findById(req.params.id)
+        let data=await Product.findById(req.params.id).select("-images")
         if(data!=null)
         res.send(data).status(200)
         else
@@ -82,5 +73,39 @@ const prodImage = async (req, res) => {
       res.status(400).json({ message: error.message });
     }
   };
+  const deleteProd=async(req,res)=>{
+    try {
+        await Product.findByIdAndDelete(req.params.pid).select("-images")
+        res.json({message:'product deleted'}).status(200)
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+const updateProd=async(req,res)=>{
+    try {
+        const { prodName, brand, description, price, category, stock } = req.fields;
+      const { images } = req.files;
+        
+      const prod = await Product.findByIdAndUpdate(req.params.pid,req.fields)
+
+      if (images) {
+          for (let i = 0; i < images.length; i++) {
+            const image = images[i];
+            console.log(i)
+            console.log(image)
+            prod.images.push({
+              data: fs.readFileSync(image.path),
+              contentType: image.type,
+            });
+          }
+      }
   
-module.exports={newProduct,products,prodname,prodImage}
+      await prod.save();
+  
+      res.json({ message: 'Success', prod }).status(200);
+    } catch (error) {
+        res.status(400).json({message:error.message})
+    }
+}
+  
+module.exports={newProduct,products,prodname,prodImage,deleteProd,updateProd}
