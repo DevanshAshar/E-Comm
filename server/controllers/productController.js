@@ -152,9 +152,36 @@ const filterProducts = async (req, res) => {
     if (radio.length) filters.price = { $gte: radio[0], $lte: radio[1] };
     const products = await Product.find(filters);
     res.status(200).send({ products });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
 };
 
+const prodCount = async (req, res) => {
+  try {
+    const total= await Product.find({}).estimatedDocumentCount();
+    res.status(200).send({ total });
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+};
+const prodList = async (req, res) => {
+  try {
+    const perPage = 1;
+    const page = req.params.pid ? req.params.pid : 1;
+    const products = await Product.find({})
+      .select("-images")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 });
+      res.status(200).json({products})
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+};
 module.exports = {
   newProduct,
   products,
@@ -164,4 +191,6 @@ module.exports = {
   deleteProd,
   updateProd,
   filterProducts,
+  prodCount,
+  prodList,
 };

@@ -12,6 +12,8 @@ const {
   updateProd,
   firstImage,
   filterProducts,
+  prodCount,
+  prodList
 } = require("../controllers/productController");
 const authentication = require("../middleware/auth");
 router.post(
@@ -32,4 +34,6 @@ router.put(
   updateProd
 );
 router.post("/filterProducts", filterProducts);
+router.get("/totalCount",prodCount)
+router.get("/prodList/:pid",prodList)
 module.exports = router;
