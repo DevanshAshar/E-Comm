@@ -29,7 +29,8 @@ const newProduct = async (req, res) => {
   
       res.json({ message: 'Success', prod }).status(200);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      console.log(error.message)
+      res.status(400).json({ message: error.message });
     }
   };
   const products=async(req,res)=>{
@@ -42,16 +43,42 @@ const newProduct = async (req, res) => {
 }
 const prodname=async(req,res)=>{
     try {
-        let data=await Product.findById(req.params.id).select("-images")
-        if(data!=null)
-        res.send(data).status(200)
+        let product=await Product.findById(req.params.pid).select("-images")
+        if(product!=null)
+        res.send(product).status(200)
         else
-        res.status(300).json({message:'Product not found'})
+        res.status(400).json({message:'Product not found'})
     } catch (error) {
         res.status(400).json({message:error.message})
     }
 }
 const prodImage = async (req, res) => {
+    try {
+      const prod = await Product.findById(req.params.pid).select('images');
+      if (prod.images.length > 0) {
+        // const imagePromises = prod.images.map(async (image) => {
+        //   if (image.data) {
+        //     return {
+        //       data: image.data,
+        //       contentType: image.contentType,
+        //     };
+        //   }
+        // });
+        // const images = await Promise.all(imagePromises);
+        const imgArr=prod.images.map((image)=>({
+          contentType:image.contentType,
+          data:image.data.toString('base64')
+        }))
+        //res.set('Content-Type', prod.images[0].contentType)
+        res.status(200).send(imgArr);
+      } else {
+        res.status(400).json({ message: 'No images found for the product' });
+      }
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  };
+  const firstImage = async (req, res) => {
     try {
       const prod = await Product.findById(req.params.pid).select('images');
       if (prod.images.length > 0) {
@@ -65,7 +92,7 @@ const prodImage = async (req, res) => {
         });
         const images = await Promise.all(imagePromises);
         res.set('Content-Type', prod.images[0].contentType)
-        res.status(200).send(prod.images);
+        res.status(200).send(prod.images[0].data);
       } else {
         res.status(404).json({ message: 'No images found for the product' });
       }
@@ -108,4 +135,4 @@ const updateProd=async(req,res)=>{
     }
 }
   
-module.exports={newProduct,products,prodname,prodImage,deleteProd,updateProd}
+module.exports={newProduct,products,prodname,firstImage,prodImage,deleteProd,updateProd}

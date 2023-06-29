@@ -3,13 +3,15 @@ import Layout from "../Components/Layouts/Layout";
 import AdminMenu from "../Components/Layouts/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import { Select } from "antd";
 const { Option } = Select;
-const CreateProduct = () => {
-  const navigate = useNavigate();
+const UpdateProduct = () => {
+    const navigate = useNavigate();
+    const params=useParams();
   const [images, setImages] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
   const [prodName, setprodName] = useState();
   const [description, setDescription] = useState();
   const [stock, setStock] = useState();
@@ -19,16 +21,58 @@ const CreateProduct = () => {
   const [price, setPrice] = useState();
   const [rating, setRating] = useState();
   const [reviews, setReviews] = useState([]);
-  const handleImageChange = (e) => {
-    const selectedFiles = e.target.files;
-    setImages(selectedFiles);
-
-    const previewUrls = [];
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i];
-      previewUrls.push(URL.createObjectURL(file));
+  const getProduct=async()=>{
+    try {
+        const {data}=await axios.get(`${process.env.REACT_APP_API}/product/prodName/${params.pid}`)
+        setprodName(data.prodName)
+        setDescription(data.description)
+        setStock(data.stock)
+        setCategory(data.category)
+        setShipping(data.shipping)
+        setBrand(data.brand)
+        setPrice(data.price)
+    } catch (error) {
+        console.log(error)
+        toast.error("Something went wrong")
     }
-    setPreviewImages(previewUrls);
+  }
+  useEffect(()=>{
+    getProduct()
+    fetchImages()
+    //eslint-disable-next-line
+  },[])
+  const fetchImages=async()=>{
+    try {
+        const res=await axios.get(`${process.env.REACT_APP_API}/product/prodImage/${params.pid}`)
+        const images = res.data.map((image) => ({
+            contentType: image.contentType,
+            data: `data:${image.contentType};base64,${image.data}`,
+          }));
+          setImages(images);
+          const previewUrls = images.map((image) => image.data);
+          setPreviewImages(previewUrls);
+    } catch (error) {
+        console.log(error)
+    }
+  }
+  const handleImageChange =async (e) => {
+    const selectedFiles = e.target.files;
+    const newSelectedImages = Array.from(selectedFiles);
+    setNewImages(newSelectedImages)
+    setImages([...images,...newSelectedImages])
+    try {
+        const previewUrls = newSelectedImages.map((file) =>
+        URL.createObjectURL(file)
+    );
+    setPreviewImages((prevPreviewImages) => [
+      ...prevPreviewImages,
+      ...previewUrls,
+    ]);
+    } catch (error) {
+        console.log(error)
+        toast.error('Something went wrong')
+    }
+    
   };
 
   const handleCreate = async (e) => {
@@ -67,7 +111,7 @@ const CreateProduct = () => {
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Create Product</h1>
+            <h1>Update Product</h1>
             <div className="m-1 w-75">
               <div className="mb-3">
                 <input
@@ -133,6 +177,7 @@ const CreateProduct = () => {
                   onChange={(value) => {
                     setShipping(value);
                   }}
+                  value={shipping?"yes":"no"}
                 >
                   <Option value="0">No</Option>
                   <Option value="1">Yes</Option>
@@ -155,24 +200,34 @@ const CreateProduct = () => {
                 className="mb-3 flex-wrap"
                 style={{ display: "flex", justifyContent: "space-around" }}
               >
-                {previewImages.map((imageUrl, index) => (
-                  <div className="text-center" key={index}>
-                    <img
-                      src={imageUrl}
-                      alt={`preview-${index}`}
-                      height="200px"
-                      className="img img-responsive"
-                      style={{ padding: "5px" }}
-                    />
-                  </div>
-                ))}
+                {images?(previewImages.map((imageUrl, index) => (
+                    <div className="text-center" key={index}>
+                      <img
+                        src={imageUrl}
+                        alt={`preview-${index}`}
+                        height="200px"
+                        className="img img-responsive"
+                        style={{ padding: "5px" }}
+                      />
+                    </div>
+                  ))):(previewImages.map((imageUrl, index) => (
+                    <div className="text-center" key={index}>
+                      <img
+                        src={imageUrl}
+                        alt={`preview-${index}`}
+                        height="200px"
+                        className="img img-responsive"
+                        style={{ padding: "5px" }}
+                      />
+                    </div>
+                  )))}
               </div>
               <div className="mb-3">
                 <button
                   className="btn btn-primary col-md-12"
                   onClick={handleCreate}
                 >
-                  CREATE PRODUCT
+                  Update PRODUCT
                 </button>
               </div>
             </div>
@@ -180,7 +235,7 @@ const CreateProduct = () => {
         </div>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default CreateProduct;
+export default UpdateProduct
