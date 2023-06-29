@@ -111,9 +111,16 @@ const prodImage = async (req, res) => {
 const updateProd=async(req,res)=>{
     try {
         const { prodName, brand, description, price, category, stock } = req.fields;
-      const { images } = req.files;
+      const images= req.files && req.files.images;
         
-      const prod = await Product.findByIdAndUpdate(req.params.pid,req.fields)
+      const prod = await Product.findById(req.params.pid)
+      prod.prodName = prodName;
+      prod.brand = brand;
+      prod.description = description;
+      prod.price = price;
+      prod.category = category;
+      prod.stock = stock;
+  
 
       if (images) {
           for (let i = 0; i < images.length; i++) {
@@ -131,6 +138,7 @@ const updateProd=async(req,res)=>{
   
       res.json({ message: 'Success', prod }).status(200);
     } catch (error) {
+      console.log(error.message)
         res.status(400).json({message:error.message})
     }
 }

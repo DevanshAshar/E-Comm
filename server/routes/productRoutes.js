@@ -11,5 +11,5 @@ router.get('/prodname/:pid',prodname)
 router.get('/prodImage/:pid',prodImage)
 router.get('/firstImage/:pid',firstImage)
 router.delete('/delete/:pid',authentication.admin,deleteProd)
-router.put('/updateProd/:pid',authentication.admin,updateProd)
+router.put('/updateProd/:pid',authentication.admin,formidable({multiples:true}),updateProd)
 module.exports=router

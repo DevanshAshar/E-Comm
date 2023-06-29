@@ -75,7 +75,7 @@ const UpdateProduct = () => {
     
   };
 
-  const handleCreate = async (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     try {
       const productData = new FormData();
@@ -88,14 +88,14 @@ const UpdateProduct = () => {
       for (let i = 0; i < images.length; i++) {
         productData.append("images", images[i]);
       }
-      const { data } = axios.post(
-        `${process.env.REACT_APP_API}/product/newProduct`,
+      const { data } = axios.put(
+        `${process.env.REACT_APP_API}/product/updateProd/${params.pid}`,
         productData
       );
       if (data?.success) {
         toast.error(data?.message);
       } else {
-        toast.success("Product Created Successfully");
+        toast.success("Product Updated  Successfully");
         navigate("/dashboard/admin/products");
       }
     } catch (error) {
@@ -103,6 +103,19 @@ const UpdateProduct = () => {
       toast.error("something went wrong");
     }
   };
+  const handleDelete=async()=>{
+    try {
+        let answer=window.prompt('Surely delete this product?(Enter yes to delete else press cancel)')
+        if(!answer)
+        return
+        const {data}=await axios.delete(`${process.env.REACT_APP_API}/product/delete/${params.pid}`)
+        toast.success("Product Deleted")
+        navigate("/dashboard/admin/products")
+    } catch (error) {
+        console.log(error);
+        toast.error("something went wrong");
+    }
+  }
   return (
     <Layout>
       <div className="container-fluid m-3 p-3">
@@ -225,9 +238,17 @@ const UpdateProduct = () => {
               <div className="mb-3">
                 <button
                   className="btn btn-primary col-md-12"
-                  onClick={handleCreate}
+                  onClick={handleUpdate}
                 >
-                  Update PRODUCT
+                  Update Product
+                </button>
+              </div>
+              <div className="mb-3">
+                <button
+                  className="btn btn-danger col-md-12"
+                  onClick={handleDelete}
+                >
+                  Delete Product
                 </button>
               </div>
             </div>
