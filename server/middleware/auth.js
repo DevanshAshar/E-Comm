@@ -13,7 +13,6 @@ const authentication={
                 const data=jwt.verify(token,process.env.SECRET_KEY)
                 const user=await User.findOne({email:data.email})
                 userData=user
-                if(userData.role==='customer')
                 next()
             } catch (error) {
                 return res.status(400).json({error:'Invalid Token'})

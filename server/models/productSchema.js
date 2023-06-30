@@ -25,8 +25,6 @@ const prodSchema=new mongoose.Schema({
         data:Buffer,
         contentType:String
     }]
-    
-
     ,
     shipping:{
         type:Boolean,

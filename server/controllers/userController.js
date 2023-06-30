@@ -7,6 +7,7 @@ const app=express()
 const {sendEmail}=require('../utility/functions')
 const User=require('../models/userSchema')
 const nodemailer=require('nodemailer')
+const Product = require('../models/productSchema')
 app.use(express.json()) 
 const auth=async(req,res)=>{
     try {
@@ -108,6 +109,7 @@ const newPass = async (req, res) => {
         res.status(200).json({ message: 'password updated' });
     } catch (err) {
         console.log(err);
+        res.status(400).json({ message: error.message });
     }
 };
 

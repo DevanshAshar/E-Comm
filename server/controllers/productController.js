@@ -1,7 +1,9 @@
 const express = require("express");
+const mongoose=require('mongoose')
 const app = express();
 app.use(express.json());
 const Product = require("../models/productSchema");
+const User=require("../models/userSchema")
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
@@ -205,6 +207,31 @@ const similarProd=async(req,res)=>{
   }
 }
 
+const addCart=async(req,res)=>{
+  try {
+    const {pid}=req.body
+    const prod=await Product.findById(pid)
+    userData.cart.push({pid,prodName:prod.prodName,price:prod.price});
+    await userData.save()
+    res.status(200).json({message:"Added to cart",userData})
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+}
+
+const remCart=async(req,res)=>{
+  try {
+    const {pid}=req.body
+    userData.cart = userData.cart.filter((p) =>{ return p.pid && p.pid.toString() !== pid});
+    await userData.save()
+    res.status(200).json({message:"Removed from cart",userData})
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+}
+
 module.exports = {
   newProduct,
   products,
@@ -217,5 +244,7 @@ module.exports = {
   prodCount,
   prodList,
   searchedProd,
-  similarProd
+  similarProd,
+  addCart,
+  remCart
 };
