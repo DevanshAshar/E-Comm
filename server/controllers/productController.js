@@ -159,7 +159,7 @@ const prodCount = async (req, res) => {
 };
 const prodList = async (req, res) => {
   try {
-    const perPage = 1;
+    const perPage = 8;//for pagination
     const page = req.params.pid ? req.params.pid : 1;
     const products = await Product.find({})
       .select("-images")
@@ -191,6 +191,20 @@ const searchedProd=async(req,res)=>{
   }
 }
 
+const similarProd=async(req,res)=>{
+  try {
+    const {pid,category}=req.params
+    const products=await Product.find({
+      category:category,
+      _id:{$ne:pid}
+    }).select("-images").limit(5)
+    res.status(200).json({products})
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+}
+
 module.exports = {
   newProduct,
   products,
@@ -202,5 +216,6 @@ module.exports = {
   filterProducts,
   prodCount,
   prodList,
-  searchedProd
+  searchedProd,
+  similarProd
 };

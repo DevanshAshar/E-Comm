@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../Components/Layouts/Layout";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import '../styles/images.css'
 const ProductDetails = () => {
   const params = useParams();
@@ -9,12 +10,15 @@ const ProductDetails = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true)
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [similar,setSimilar]=useState([])
+  const navigate=useNavigate()
   const getProd = async () => {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/product/prodname/${params.pid}`
       );
       setProduct(data?.product);
+      getSimilar(data?.product._id,data?.product.category)
     } catch (error) {
       console.log(error);
     }
@@ -30,6 +34,14 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
+  const getSimilar=async(pid,category)=>{
+    try {
+        const {data}=await axios.get(`${process.env.REACT_APP_API}/product/similarProd/${pid}/${category}`)
+        setSimilar(data?.products)
+    } catch (error) {
+        console.log(error)
+    }
+  }
   useEffect(() => {
     if (params?.pid) {
       getProd();
@@ -74,16 +86,44 @@ const ProductDetails = () => {
         )}
       </div>
       <div className="col-md-6">
-        <h1 className="text-center">Product Details</h1>
-        <h5>Name: {product.prodName}</h5>
-        <h5>Brand: {product.brand}</h5>
-        <h5>Category: {product.category}</h5>
-        <h5>Price: {product.price}</h5>
-        <h5>Description: {product.description}</h5>
-        <button class="btn btn-secondary ms-1" style={{backgroundColor:'green'}}>Add to Cart</button>  
+        <h1 className="text-center mt-4">Product Details</h1>
+        <h6 className="mt-4">Name: {product.prodName}</h6>
+        <h6>Brand: {product.brand}</h6>
+        <h6>Category: {product.category}</h6>
+        <h6>Price: ₹{product.price}</h6>
+        <h6>Description: {product.description}</h6>
+        <button class="btn btn-secondary ms-1 mt-3" style={{backgroundColor:'green'}}>Add to Cart</button>  
       </div>
     </div>
-    <div className="row m-5">Similar Products</div>
+    <hr className="mt-5"/>
+    <div className="row container m-5">
+        <h2>
+        Similar Products
+        </h2>
+        {similar.length<1 && (<p className="text-center">No Similar Products found</p>) }
+        <div className="d-flex flex-wrap">
+            <div className='flex-wrap' style={{display:"flex"}}>
+                {similar?.map(p=>(                    
+                    <div className="card m-2" style={{width: "18rem",border:"solid purple"}} key={p._id}>
+                    {(
+                      <img
+                        src={`${process.env.REACT_APP_API}/product/firstImage/${p._id}`}
+                        className="card-img-top"
+                        alt={p.prodName}
+                      />
+                    )}
+                    <div className="card-body">
+                      <h5 className="card-title">{p.prodName}</h5>
+                      <p className="card-text">{p.description.substring(0,30)}...</p> 
+                      <p className="card-text">₹{p.price}</p> 
+                      <button class="btn btn-primary ms-1" onClick={()=>navigate(`/product/${p._id}`)}>View</button>     
+                      <button class="btn btn-secondary ms-1">Add to Cart</button>             
+                    </div>
+                  </div>
+                ))}
+            </div>
+            </div>
+    </div>
   </Layout>  
   );
 };

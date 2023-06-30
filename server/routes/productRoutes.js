@@ -13,7 +13,8 @@ const {
   filterProducts,
   prodCount,
   prodList,
-  searchedProd
+  searchedProd,
+  similarProd
 } = require("../controllers/productController");
 const authentication = require("../middleware/auth");
 router.post(
@@ -37,4 +38,5 @@ router.post("/filterProducts", filterProducts);
 router.get("/totalCount",prodCount)
 router.get("/prodList/:pid",prodList)
 router.get("/searchedProd/:keyword",searchedProd)
+router.get("/similarProd/:pid/:category",similarProd)
 module.exports = router;
