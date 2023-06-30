@@ -49,10 +49,10 @@ const ProductDetails = () => {
     }
   }, [params?.pid]);
   const showNextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length); // Update the current index to show the next image
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length); 
   };
   const showPreviousImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length); // Update the current index to show the previous image
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length); 
   };
   return (
     <Layout>
@@ -92,6 +92,7 @@ const ProductDetails = () => {
         <h6>Category: {product.category}</h6>
         <h6>Price: ₹{product.price}</h6>
         <h6>Description: {product.description}</h6>
+        {product.stock>0?<h6 className="card-text" style={{color:"green"}}>In Stock</h6>:<h6 className="card-text" style={{color:"red"}}>Out of Stock</h6>}
         <button class="btn btn-secondary ms-1 mt-3" style={{backgroundColor:'green'}}>Add to Cart</button>  
       </div>
     </div>
@@ -115,7 +116,7 @@ const ProductDetails = () => {
                     <div className="card-body">
                       <h5 className="card-title">{p.prodName}</h5>
                       <p className="card-text">{p.description.substring(0,30)}...</p> 
-                      <p className="card-text">₹{p.price}</p> 
+                      <p className="card-text">₹{p.price}</p>
                       <button class="btn btn-primary ms-1" onClick={()=>navigate(`/product/${p._id}`)}>View</button>     
                       <button class="btn btn-secondary ms-1">Add to Cart</button>             
                     </div>
