@@ -3,6 +3,7 @@ import Layout from '../Components/Layouts/Layout'
 import axios from 'axios'
 import {Checkbox,Radio} from "antd"
 import { Prices } from '../Components/Prices'
+import { useNavigate } from 'react-router-dom'
 const Home = () => {
   const [products,setProducts]=useState([])
   const [check,setCheck]=useState([])
@@ -10,6 +11,7 @@ const Home = () => {
   const[total,setTotal]=useState(0)
   const[page,setPage]=useState(1)
   const[loading,setLoading]=useState(false)
+  const navigate=useNavigate()
   const categories=['Laptops','Mobiles','Televisions','Refrigerators','Microwaves','Earphones']
   const getProducts=async()=>{
     try {
@@ -118,7 +120,7 @@ const Home = () => {
                       <h5 className="card-title">{p.prodName}</h5>
                       <p className="card-text">{p.description.substring(0,30)}...</p> 
                       <p className="card-text">₹{p.price}</p> 
-                      <button class="btn btn-primary ms-1">View</button>     
+                      <button class="btn btn-primary ms-1" onClick={()=>navigate(`/product/${p._id}`)}>View</button>     
                       <button class="btn btn-secondary ms-1">Add to Cart</button>             
                     </div>
                   </div>

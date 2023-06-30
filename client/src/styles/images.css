@@ -1,0 +1,44 @@
+.image-container {
+    position: relative;
+  }
+  
+  .product-image {
+    width: 100%;
+    height: auto;
+    margin: 5px;
+    padding: 5px;
+  }
+  
+  .arrow-buttons {
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .arrow-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .arrow-button img {
+    width: 20px;
+    height: auto;
+  }
+  
+  .previous-button {
+    position: absolute;
+    left: 10px;
+  }
+  
+  .next-button {
+    position: absolute;
+    right: 10px;
+  }
+  
+  

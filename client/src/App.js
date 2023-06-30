@@ -17,12 +17,14 @@ import Profile from "./Pages/Profile";
 import AdminProducts from "./Pages/AdminProducts";
 import UpdateProduct from "./Pages/UpdateProduct";
 import Search from "./Pages/Search";
+import ProductDetails from "./Pages/ProductDetails";
 function App() {
   return (
     <>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/search" element={<Search/>}/>
+        <Route path="/product/:pid" element={<ProductDetails/>}/>
         <Route path="/dashboard/user" element={<Private />}>
           <Route path="landing" element={<Dashboard />} />
           <Route path="orders" element={<Orders />} />
