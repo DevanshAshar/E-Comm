@@ -1,7 +1,6 @@
 const express = require("express");
 const router = new express.Router();
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
 const formidable = require("express-formidable");
 const {
   newProduct,
@@ -13,7 +12,8 @@ const {
   firstImage,
   filterProducts,
   prodCount,
-  prodList
+  prodList,
+  searchedProd
 } = require("../controllers/productController");
 const authentication = require("../middleware/auth");
 router.post(
@@ -36,4 +36,5 @@ router.put(
 router.post("/filterProducts", filterProducts);
 router.get("/totalCount",prodCount)
 router.get("/prodList/:pid",prodList)
+router.get("/searchedProd/:keyword",searchedProd)
 module.exports = router;
