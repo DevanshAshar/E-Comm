@@ -1,9 +1,53 @@
 import React from "react";
 import Layout from "../Components/Layouts/Layout";
 import { useSearch } from "../Context/search";
-
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { useAuth } from "../Context/auth";
 const Search = () => {
   const [value, setValue] = useSearch();
+  const [auth,setAuth]=useAuth()
+  const productInCart=(pid)=>{
+    const user=auth.user
+    let i=0
+    const cart=user.cart
+    for(i=0;i<user.cart.length;i++)
+    {
+      if(pid===cart[i].pid)
+      return true
+    }
+    return false
+  }
+  const addToCart=async(pid)=>{
+    try {
+      const res=await axios.post(`${process.env.REACT_APP_API}/product/addCart`,{pid})
+      if(res.status===200)
+      {
+      toast.success("Item added to cart")
+      setAuth({...auth,user:res.data.userData})
+      }
+      else
+      toast.error("Something went wrong")
+    } catch (error) {
+      console.log(error)
+      toast.error("Something went wrong")
+    }
+  }
+  const remFromCart=async(pid)=>{
+    try {
+      const res=await axios.post(`${process.env.REACT_APP_API}/product/remCart`,{pid})
+      if(res.status===200)
+      {
+      toast.success("Item Removed From Cart")
+      setAuth({...auth,user:res.data.userData})
+      }
+      else
+      toast.error("Something went wrong")
+    } catch (error) {
+      console.log(error)
+      toast.error("Something went wrong")
+    }
+  }
   return (
     <Layout>
       <div className="container">
@@ -30,7 +74,19 @@ const Search = () => {
                       <p className="card-text">{p.description.substring(0,30)}...</p> 
                       <p className="card-text">₹{p.price}</p> 
                       <button class="btn btn-primary ms-1">View</button>     
-                      <button class="btn btn-secondary ms-1">Add to Cart</button>             
+                      {auth.user.cart.length>0 && productInCart(p._id)?(<button
+                        className="btn btn-secondary ms-1"
+                        style={{backgroundColor:'red'}}
+                        onClick={() => remFromCart(p._id)}
+                      >
+                        Remove From Cart
+                      </button>):(<button
+                        className="btn btn-secondary ms-1"
+                        style={{backgroundColor:'green'}}
+                        onClick={() => addToCart(p._id)}
+                      >
+                        Add to Cart
+                      </button>)}            
                     </div>
                   </div>
                 ))}

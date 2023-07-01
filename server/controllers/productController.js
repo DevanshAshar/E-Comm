@@ -211,7 +211,7 @@ const addCart=async(req,res)=>{
   try {
     const {pid}=req.body
     const prod=await Product.findById(pid)
-    userData.cart.push({pid,prodName:prod.prodName,price:prod.price});
+    userData.cart.push({pid,prodName:prod.prodName,price:prod.price,quantity:1});
     await userData.save()
     res.status(200).json({message:"Added to cart",userData})
   } catch (error) {
@@ -232,6 +232,34 @@ const remCart=async(req,res)=>{
   }
 }
 
+const updateCart=async(req,res)=>{
+  try {
+    const {pid,quantity}=req.body
+    for(let i=0;i<userData.cart.length;i++)
+    {
+      if(userData.cart[i].pid.toString()===pid)
+      {
+        userData.cart[i].quantity=quantity
+      }
+    }
+    await userData.save()
+    res.status(200).json({message:'Updated',userData})
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+}
+
+const getCart=async(req,res)=>{
+  try {
+    const cart=userData.cart
+    res.status(200).json({cart})
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+}
+
 module.exports = {
   newProduct,
   products,
@@ -246,5 +274,7 @@ module.exports = {
   searchedProd,
   similarProd,
   addCart,
-  remCart
+  remCart,
+  updateCart,
+  getCart
 };

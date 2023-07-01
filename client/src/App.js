@@ -19,14 +19,19 @@ import UpdateProduct from "./Pages/UpdateProduct";
 import Search from "./Pages/Search";
 import ProductDetails from "./Pages/ProductDetails";
 import CartPage from "./Pages/CartPage";
+import Landing from "./Components/Layouts/Landing";
 function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/search" element={<Search/>}/>
-        <Route path="/product/:pid" element={<ProductDetails/>}/>
-        <Route path="/cart" element={<CartPage/>}/>
+        <Route exact path="/" element={<Landing/>}/>
+        <Route path="" element={<Private />}>
+          <Route exact path="/home" element={<Home />} />
+          <Route exact path="/logLand" element={<Landing/>}/>
+          <Route path="/search" element={<Search/>}/>
+          <Route path="/cart" element={<CartPage/>}/>
+          <Route path="/product/:pid" element={<ProductDetails/>}/>
+        </Route>
         <Route path="/dashboard/user" element={<Private />}>
           <Route path="landing" element={<Dashboard />} />
           <Route path="orders" element={<Orders />} />

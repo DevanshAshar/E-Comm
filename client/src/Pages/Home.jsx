@@ -82,6 +82,7 @@ const Home = () => {
       toast.error("Something went wrong")
     } catch (error) {
       console.log(error)
+      window.location.reload();
       toast.error("Something went wrong")
     }
   }
@@ -98,6 +99,7 @@ const Home = () => {
     } catch (error) {
       console.log(error)
       toast.error("Something went wrong")
+      window.location.reload(); 
     }
   }
   useEffect(() => {

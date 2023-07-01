@@ -16,7 +16,9 @@ const {
   searchedProd,
   similarProd,
   addCart,
-  remCart
+  remCart,
+  updateCart,
+  getCart
 } = require("../controllers/productController");
 const authentication = require("../middleware/auth");
 router.post(
@@ -43,4 +45,6 @@ router.get("/searchedProd/:keyword",searchedProd)
 router.get("/similarProd/:pid/:category",similarProd)
 router.post("/addCart",authentication.verifyToken,addCart)
 router.post("/remCart",authentication.verifyToken,remCart)
+router.post("/updCart",authentication.verifyToken,updateCart)
+router.get("/getCart",authentication.verifyToken,getCart)
 module.exports = router;

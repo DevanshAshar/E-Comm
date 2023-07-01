@@ -36,7 +36,7 @@ const Login = () => {
               token:res.data.token
             })
             localStorage.setItem('auth',JSON.stringify(res.data))
-            navigate(location.state||'/')
+            navigate(location.state||'/logLand')
           }
             }
            catch (error) {

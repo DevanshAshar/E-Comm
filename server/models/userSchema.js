@@ -54,7 +54,8 @@ const userSchema = new mongoose.Schema(
       {
         pid: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
         prodName:{type:String},
-        price:{type:String}
+        price:{type:String},
+        quantity:{type:Number}
       },
     ],
     otp: { type: Number },

@@ -3,7 +3,9 @@ import Layout from "../Components/Layouts/Layout";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import '../styles/images.css'
+import { useAuth } from "../Context/auth";
 const ProductDetails = () => {
   const params = useParams();
   const [product, setProduct] = useState({}); // we use object because there is only single prod
@@ -12,6 +14,7 @@ const ProductDetails = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [similar,setSimilar]=useState([])
   const navigate=useNavigate()
+  const [auth,setAuth]=useAuth()
   const getProd = async () => {
     try {
       const { data } = await axios.get(
@@ -40,6 +43,47 @@ const ProductDetails = () => {
         setSimilar(data?.products)
     } catch (error) {
         console.log(error)
+    }
+  }
+  const productInCart=(pid)=>{
+    const user=auth.user
+    let i=0
+    const cart=user.cart
+    for(i=0;i<user.cart.length;i++)
+    {
+      if(pid===cart[i].pid)
+      return true
+    }
+    return false
+  }
+  const addToCart=async(pid)=>{
+    try {
+      const res=await axios.post(`${process.env.REACT_APP_API}/product/addCart`,{pid})
+      if(res.status===200)
+      {
+      toast.success("Item added to cart")
+      setAuth({...auth,user:res.data.userData})
+      }
+      else
+      toast.error("Something went wrong")
+    } catch (error) {
+      console.log(error)
+      toast.error("Something went wrong")
+    }
+  }
+  const remFromCart=async(pid)=>{
+    try {
+      const res=await axios.post(`${process.env.REACT_APP_API}/product/remCart`,{pid})
+      if(res.status===200)
+      {
+      toast.success("Item Removed From Cart")
+      setAuth({...auth,user:res.data.userData})
+      }
+      else
+      toast.error("Something went wrong")
+    } catch (error) {
+      console.log(error)
+      toast.error("Something went wrong")
     }
   }
   useEffect(() => {
@@ -93,7 +137,19 @@ const ProductDetails = () => {
         <h6>Price: ₹{product.price}</h6>
         <h6>Description: {product.description}</h6>
         {product.stock>0?<h6 className="card-text" style={{color:"green"}}>In Stock</h6>:<h6 className="card-text" style={{color:"red"}}>Out of Stock</h6>}
-        <button class="btn btn-secondary ms-1 mt-3" style={{backgroundColor:'green'}}>Add to Cart</button>  
+        {auth.user.cart.length>0 && productInCart(product._id)?(<button
+                        className="btn btn-secondary ms-1"
+                        style={{backgroundColor:'red'}}
+                        onClick={() => remFromCart(product._id)}
+                      >
+                        Remove From Cart
+                      </button>):(<button
+                        className="btn btn-secondary ms-1"
+                        style={{backgroundColor:'green'}}
+                        onClick={() => addToCart(product._id)}
+                      >
+                        Add to Cart
+                      </button>)}  
       </div>
     </div>
     <hr className="mt-5"/>
@@ -118,7 +174,19 @@ const ProductDetails = () => {
                       <p className="card-text">{p.description.substring(0,30)}...</p> 
                       <p className="card-text">₹{p.price}</p>
                       <button class="btn btn-primary ms-1" onClick={()=>navigate(`/product/${p._id}`)}>View</button>     
-                      <button class="btn btn-secondary ms-1">Add to Cart</button>             
+                      {auth.user.cart.length>0 && productInCart(p._id)?(<button
+                        className="btn btn-secondary ms-1"
+                        style={{backgroundColor:'red'}}
+                        onClick={() => remFromCart(p._id)}
+                      >
+                        Remove From Cart
+                      </button>):(<button
+                        className="btn btn-secondary ms-1"
+                        style={{backgroundColor:'green'}}
+                        onClick={() => addToCart(p._id)}
+                      >
+                        Add to Cart
+                      </button>)}             
                     </div>
                   </div>
                 ))}

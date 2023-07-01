@@ -32,16 +32,13 @@ const Header = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <NavLink className="navbar-brand" to="/">
-              E-Commerce App
-            </NavLink>
+            {!auth.user?(<NavLink className="navbar-brand" to="/">
+              ElexKart
+            </NavLink>):(<NavLink className="navbar-brand" to="/logLand">
+              ElexKart
+            </NavLink>)}
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <SearchInput/>
-              <li className="nav-item">
-                <NavLink className="nav-link active" aria-current="page" to="/">
-                  Home
-                </NavLink>
-              </li>
+             
               {
                 !auth.user?(
                   <>
@@ -58,6 +55,12 @@ const Header = () => {
                   </>
                 ):(
                 <>
+                   <SearchInput/>
+              <li className="nav-item">
+                <NavLink className="nav-link active" aria-current="page" to="/home">
+                  Home
+                </NavLink>
+              </li>
                   <li className="nav-item">
                 <NavLink className="nav-link" to="/login" onClick={logout}>
                   Logout
@@ -68,14 +71,14 @@ const Header = () => {
                   Dashboard
                 </NavLink>
               </li>
-                </>
-                )
-              }
               <li className="nav-item">
                 <NavLink className="nav-link" to="/cart">
                   Cart
                 </NavLink>
               </li>
+                </>
+                )
+              }
             </ul>
           </div>
         </div>
