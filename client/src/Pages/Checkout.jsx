@@ -3,7 +3,7 @@ import Layout from "../Components/Layouts/Layout";
 import { useAuth } from "../Context/auth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { toast } from "react-hot-toast";
 const Checkout = () => {
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
@@ -51,7 +51,22 @@ const Checkout = () => {
     }
     setTotalAmount(total);
   };
-
+  const payment=async()=>{
+    try {
+        const response=await axios.post(`${process.env.REACT_APP_API}/user/payment`,{amount:totalAmount})
+        const options = {
+            key: process.env.REACT_APP_RAZORPAY_KEY, 
+            amount: totalAmount*100, 
+            currency: "INR",
+            order_id: response.id,
+        };
+        var rzp1 = new window.Razorpay(options);
+        rzp1.open() 
+    } catch (error) {
+        console.log(error)
+        toast.error("Transaction Failed")
+    }
+  }
   useEffect(() => {
     getAuth();
   }, []);
@@ -99,7 +114,7 @@ const Checkout = () => {
             <button
               className="btn btn-primary mb-2"
               style={{ width: "100%",backgroundColor:'green' }}
-              onClick={() => navigate("/cart")}
+              onClick={() => payment()}
             >
               Confirm Order
             </button>
