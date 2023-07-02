@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../Context/cart";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../Context/auth";
+import "../styles/star.css";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [check, setCheck] = useState([]);
@@ -16,7 +17,7 @@ const Home = () => {
   const [cart, setCart] = useCart();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [auth,setAuth]=useAuth()
+  const [auth, setAuth] = useAuth();
   const categories = [
     "Laptops",
     "Mobiles",
@@ -48,21 +49,21 @@ const Home = () => {
       console.log(error);
     }
   };
-  const productInCart=(pid)=>{
-    const user=auth.user
-    let i=0
-    const cart=user.cart
-    for(i=0;i<user.cart.length;i++)
-    {
-      if(pid===cart[i].pid)
-      return true
+  const productInCart = (pid) => {
+    const user = auth.user;
+    let i = 0;
+    const cart = user.cart;
+    for (i = 0; i < user.cart.length; i++) {
+      if (pid === cart[i].pid) return true;
     }
-    return false
-  }
+    return false;
+  };
   const loadMore = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`${process.env.REACT_APP_API}/product/prodList/${page}`);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/product/prodList/${page}`
+      );
       setLoading(false);
       setProducts([...products, ...data?.products]);
     } catch (error) {
@@ -70,38 +71,38 @@ const Home = () => {
       console.log(error);
     }
   };
-  const addToCart=async(pid)=>{
+  const addToCart = async (pid) => {
     try {
-      const res=await axios.post(`${process.env.REACT_APP_API}/product/addCart`,{pid})
-      if(res.status===200)
-      {
-      toast.success("Item added to cart")
-      setAuth({...auth,user:res.data.userData})
-      }
-      else
-      toast.error("Something went wrong")
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}/product/addCart`,
+        { pid }
+      );
+      if (res.status === 200) {
+        toast.success("Item added to cart");
+        setAuth({ ...auth, user: res.data.userData });
+      } else toast.error("Something went wrong");
     } catch (error) {
-      console.log(error)
+      console.log(error);
       window.location.reload();
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
-  }
-  const remFromCart=async(pid)=>{
+  };
+  const remFromCart = async (pid) => {
     try {
-      const res=await axios.post(`${process.env.REACT_APP_API}/product/remCart`,{pid})
-      if(res.status===200)
-      {
-      toast.success("Item Removed From Cart")
-      setAuth({...auth,user:res.data.userData})
-      }
-      else
-      toast.error("Something went wrong")
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}/product/remCart`,
+        { pid }
+      );
+      if (res.status === 200) {
+        toast.success("Item Removed From Cart");
+        setAuth({ ...auth, user: res.data.userData });
+      } else toast.error("Something went wrong");
     } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong")
-      window.location.reload(); 
+      console.log(error);
+      toast.error("Something went wrong");
+      window.location.reload();
     }
-  }
+  };
   useEffect(() => {
     if (page === 1) return;
     loadMore();
@@ -132,6 +133,10 @@ const Home = () => {
   useEffect(() => {
     getTotal();
   }, []);
+  useEffect(() => {
+    localStorage.setItem("auth", JSON.stringify(auth));
+  }, [auth]);
+
   return (
     <Layout>
       <div className="row m-5">
@@ -190,25 +195,48 @@ const Home = () => {
                         {p.description.substring(0, 30)}...
                       </p>
                       <p className="card-text">₹{p.price}</p>
+                      <div className="card-text">
+                        {Array.from({ length: 5 }, (_, index) => {
+                          if (index < Math.floor(p.rating)) {
+                            // Filled star
+                            return (
+                              <span key={index} className="star">
+                                &#9733;
+                              </span>
+                            );
+                          } else {
+                            // Empty star
+                            return (
+                              <span key={index} className="star">
+                                &#9734;
+                              </span>
+                            );
+                          }
+                        })}
+                      </div>
                       <button
                         class="btn btn-primary ms-1"
                         onClick={() => navigate(`/product/${p._id}`)}
                       >
                         View
                       </button>
-                      {auth.user.cart.length>0 && productInCart(p._id)?(<button
-                        className="btn btn-secondary ms-1"
-                        style={{backgroundColor:'red'}}
-                        onClick={() => remFromCart(p._id)}
-                      >
-                        Remove From Cart
-                      </button>):(<button
-                        className="btn btn-secondary ms-1"
-                        style={{backgroundColor:'green'}}
-                        onClick={() => addToCart(p._id)}
-                      >
-                        Add to Cart
-                      </button>)}                      
+                      {auth.user.cart.length > 0 && productInCart(p._id) ? (
+                        <button
+                          className="btn btn-secondary ms-1"
+                          style={{ backgroundColor: "red" }}
+                          onClick={() => remFromCart(p._id)}
+                        >
+                          Remove From Cart
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-secondary ms-1"
+                          style={{ backgroundColor: "green" }}
+                          onClick={() => addToCart(p._id)}
+                        >
+                          Add to Cart
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))

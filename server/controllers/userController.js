@@ -109,9 +109,20 @@ const newPass = async (req, res) => {
         res.status(200).json({ message: 'password updated' });
     } catch (err) {
         console.log(err);
-        res.status(400).json({ message: error.message });
+        res.status(400).json({ message: err.message });
     }
 };
+
+const updateUser=async(req,res)=>{
+    try {
+        const {username,email,address,mobile}=req.body
+        const user=await User.findByIdAndUpdate(userData._id,req.body)
+        res.status(200).json({message:'Profile updated'})
+    } catch (error) {
+        console.log(err);
+        res.status(400).json({ message: error.message });
+    }
+}
 
 module.exports={
     newUser,
@@ -119,5 +130,6 @@ module.exports={
     auth,
     forgotPass,
     verifyOtp,
-    newPass
+    newPass,
+    updateUser
 }

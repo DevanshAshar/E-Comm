@@ -20,6 +20,9 @@ import Search from "./Pages/Search";
 import ProductDetails from "./Pages/ProductDetails";
 import CartPage from "./Pages/CartPage";
 import Landing from "./Components/Layouts/Landing";
+import Checkout from "./Pages/Checkout";
+import Review from "./Pages/Review";
+import EditReview from "./Pages/EditReview";
 function App() {
   return (
     <>
@@ -30,7 +33,10 @@ function App() {
           <Route exact path="/logLand" element={<Landing/>}/>
           <Route path="/search" element={<Search/>}/>
           <Route path="/cart" element={<CartPage/>}/>
+          <Route path="/checkout" element={<Checkout/>}/>
           <Route path="/product/:pid" element={<ProductDetails/>}/>
+          <Route path="/review" element={<Review/>}/>
+          <Route path="/editReview" element={<EditReview/>}/>
         </Route>
         <Route path="/dashboard/user" element={<Private />}>
           <Route path="landing" element={<Dashboard />} />

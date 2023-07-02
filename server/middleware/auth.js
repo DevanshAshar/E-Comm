@@ -15,7 +15,7 @@ const authentication={
                 userData=user
                 next()
             } catch (error) {
-                return res.status(400).json({error:'Invalid Token'})
+                return res.status(400).json(error.message)
             }
         }
     

@@ -1,0 +1,18 @@
+.star {
+    color: purple;
+    font-size: 1.5rem;
+  }
+  
+  .half-filled {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+  }
+  
+  .half-filled:before {
+    content: "\2605";
+    position: absolute;
+    width: 50%;
+    overflow: hidden;
+    color: purple;
+  }

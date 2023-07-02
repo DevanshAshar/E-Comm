@@ -18,7 +18,9 @@ const {
   addCart,
   remCart,
   updateCart,
-  getCart
+  getCart,
+  addRev,
+  editRev
 } = require("../controllers/productController");
 const authentication = require("../middleware/auth");
 router.post(
@@ -47,4 +49,6 @@ router.post("/addCart",authentication.verifyToken,addCart)
 router.post("/remCart",authentication.verifyToken,remCart)
 router.post("/updCart",authentication.verifyToken,updateCart)
 router.get("/getCart",authentication.verifyToken,getCart)
+router.post("/addRev",authentication.verifyToken,addRev)
+router.patch("/editRev",authentication.verifyToken,editRev)
 module.exports = router;
