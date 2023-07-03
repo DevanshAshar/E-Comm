@@ -19,6 +19,8 @@
 }
 .navbar-brand{
   border-bottom: none;
+  display: flex;
+  align-items: center;
 }
 
 .signup{

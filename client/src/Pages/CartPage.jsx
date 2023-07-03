@@ -153,7 +153,7 @@ const CartPage = () => {
               </div>
             </div>
           </div>
-        ) : null}
+        ) : <h4>No Products in cart</h4>}
       </div>
     </Layout>
   );

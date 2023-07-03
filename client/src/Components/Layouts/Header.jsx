@@ -34,8 +34,10 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
             {!auth.user?(<NavLink className="navbar-brand" to="/">
               ElexKart
+              <img src="https://w7.pngwing.com/pngs/798/196/png-transparent-computer-icons-shopping-cart-e-commerce-add-to-cart-button-purple-angle-text.png" alt="logo"style={{"max-width":"8%","height":"auto"}}/>
             </NavLink>):(<NavLink className="navbar-brand" to="/logLand">
               ElexKart
+              <img src="https://w7.pngwing.com/pngs/798/196/png-transparent-computer-icons-shopping-cart-e-commerce-add-to-cart-button-purple-angle-text.png" alt="logo" style={{"max-width":"8%","height":"auto"}}/>
             </NavLink>)}
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
              
@@ -57,7 +59,7 @@ const Header = () => {
                 <>
                    <SearchInput/>
               <li className="nav-item">
-                <NavLink className="nav-link active" aria-current="page" to="/home">
+                <NavLink className="nav-link" aria-current="page" to="/home">
                   Home
                 </NavLink>
               </li>

@@ -26,6 +26,11 @@ const SearchInput = () => {
       <form className="d-flex" role="search" onSubmit={handleSubmit}>
         <input
           className="form-control me-2"
+          style={{
+            "flex-grow":"1",
+            width:"500px",
+            maxWidth:"600px"
+          }}
           type="search"
           placeholder="Search"
           aria-label="Search"
