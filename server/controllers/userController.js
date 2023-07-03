@@ -8,7 +8,8 @@ const { sendEmail } = require("../utility/functions");
 const User = require("../models/userSchema");
 const nodemailer = require("nodemailer");
 const Product = require("../models/productSchema");
-const Razorpay=require("razorpay")
+const Razorpay=require("razorpay");
+const Order = require("../models/ordersSchema");
 app.use(express.json());
 const auth = async (req, res) => {
   try {
@@ -131,9 +132,25 @@ const updateUser = async (req, res) => {
   }
 };
 
+const cart=async(req,res)=>{
+  try {
+    const c=userData.cart
+    res.status(200).json({c})
+  } catch (error) {
+    console.log(err);
+    res.status(400).json({ message: error.message });
+  }
+}
+
 const payment = async (req, res) => {
   try {
-    let { amount } = req.body;
+    let { amount,products } = req.body;
+    for(let i=0;i<products.length;i++)
+    {
+      const prod=await Product.findById(products[i].pid)
+      if(products[i].quantity>prod.stock)
+      return res.status(500).json({prod})
+    }
     var instance = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
       key_secret:process.env.RAZORPAY_KEY_SECRET,
@@ -143,8 +160,16 @@ const payment = async (req, res) => {
       currency: "INR",
       receipt: "receipt#1",
     });
-    console.log(order);
-    res.status(200).json({ order });
+    for(let i=0;i<products.length;i++)
+    {
+      const prod=await Product.findById(products[i].pid)
+      prod.stock=prod.stock-products[i].quantity
+      await prod.save()
+    }
+    const date=new Date().toLocaleDateString()
+    const ord=await Order.create({userId:userData._id,status:"In Process",products:req.body.products,amount:req.body.amount,date:date})
+    await ord.save()
+    res.status(200).json({ ord });
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error.message });
@@ -159,5 +184,6 @@ module.exports = {
   verifyOtp,
   newPass,
   updateUser,
-  payment
+  payment,
+  cart
 };

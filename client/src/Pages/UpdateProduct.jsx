@@ -24,13 +24,12 @@ const UpdateProduct = () => {
   const getProduct=async()=>{
     try {
         const {data}=await axios.get(`${process.env.REACT_APP_API}/product/prodName/${params.pid}`)
-        setprodName(data.prodName)
-        setDescription(data.description)
-        setStock(data.stock)
-        setCategory(data.category)
-        setShipping(data.shipping)
-        setBrand(data.brand)
-        setPrice(data.price)
+        setprodName(data.product.prodName)
+        setDescription(data.product.description)
+        setStock(data.product.stock)
+        setCategory(data.product.category)
+        setBrand(data.product.brand)
+        setPrice(data.product.price)
     } catch (error) {
         console.log(error)
         toast.error("Something went wrong")
@@ -179,22 +178,6 @@ const UpdateProduct = () => {
                   className="form-control"
                   onChange={(e) => setStock(e.target.value)}
                 />
-              </div>
-              <div className="mb-3">
-                <Select
-                  bordered={false}
-                  placeholder="Select Shipping"
-                  style={{ textDecoration: "bold" }}
-                  showSearch
-                  className="form-select mb-3"
-                  onChange={(value) => {
-                    setShipping(value);
-                  }}
-                  value={shipping?"yes":"no"}
-                >
-                  <Option value="0">No</Option>
-                  <Option value="1">Yes</Option>
-                </Select>
               </div>
               <div className="mb-3">
                 <label className="btn btn-outline-secondary col-md-12">

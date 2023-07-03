@@ -22,6 +22,8 @@ import Landing from "./Components/Layouts/Landing";
 import Checkout from "./Pages/Checkout";
 import Review from "./Pages/Review";
 import EditReview from "./Pages/EditReview";
+import AllOrders from "./Pages/AllOrders";
+import AdminOrders from "./Pages/AdminOrders";
 function App() {
   return (
     <>
@@ -48,6 +50,8 @@ function App() {
           <Route path="product/:pid" element={<UpdateProduct />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="users" element={<AllUsers />} />
+          <Route path="allOrders" element={<AllOrders/>}/>
+          <Route path="myOrders" element={<AdminOrders/>}/>
         </Route>
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/login" element={<Login />} />

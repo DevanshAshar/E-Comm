@@ -8,7 +8,8 @@ const{newUser,
     forgotPass,
     newPass,
     updateUser,
-    payment}=require('../controllers/userController')
+    payment,
+    cart}=require('../controllers/userController')
 router.post('/newUser',newUser)
 router.post('/userLogin',userLogin)
 router.get('/auth',authentication.verifyToken,auth)
@@ -18,4 +19,5 @@ router.post('/verifyOtp', verifyOtp);
 router.post('/newPass', newPass);
 router.patch('/updateUser',authentication.verifyToken,updateUser)
 router.post('/payment',authentication.verifyToken,payment)
+router.get('/cart',authentication.verifyToken,cart)
 module.exports=router

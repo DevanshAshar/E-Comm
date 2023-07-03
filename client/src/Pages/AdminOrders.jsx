@@ -4,7 +4,8 @@ import UserMenu from "../Components/Layouts/UserMenu";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../Context/auth";
-const Orders = () => {
+import AdminMenu from "../Components/Layouts/AdminMenu";
+const AdminOrders = () => {
     const [auth, setAuth] = useAuth();
   const [orders, setOrders] = useState([]);
   const getOrders = async () => {
@@ -30,7 +31,7 @@ const Orders = () => {
       <div className="container-fluid p-3 m-3">
         <div className="row">
           <div className="col-md-2">
-            <UserMenu />
+            <AdminMenu />
           </div>
           <div className="col-md-9">
             <h1>My Orders</h1>
@@ -71,4 +72,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default AdminOrders;

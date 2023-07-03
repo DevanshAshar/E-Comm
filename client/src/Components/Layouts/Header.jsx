@@ -34,7 +34,7 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
             {!auth.user?(<NavLink className="navbar-brand" to="/">
               ElexKart
-              <img src="https://w7.pngwing.com/pngs/798/196/png-transparent-computer-icons-shopping-cart-e-commerce-add-to-cart-button-purple-angle-text.png" alt="logo"style={{"max-width":"8%","height":"auto"}}/>
+              <img src="https://w7.pngwing.com/pngs/798/196/png-transparent-computer-icons-shopping-cart-e-commerce-add-to-cart-button-purple-angle-text.png" alt="logo"style={{"max-width":"4%","height":"auto"}}/>
             </NavLink>):(<NavLink className="navbar-brand" to="/logLand">
               ElexKart
               <img src="https://w7.pngwing.com/pngs/798/196/png-transparent-computer-icons-shopping-cart-e-commerce-add-to-cart-button-purple-angle-text.png" alt="logo" style={{"max-width":"8%","height":"auto"}}/>

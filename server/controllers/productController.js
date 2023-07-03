@@ -161,7 +161,7 @@ const prodCount = async (req, res) => {
 };
 const prodList = async (req, res) => {
   try {
-    const perPage = 8; //for pagination
+    const perPage = 6; //for pagination
     const page = req.params.pid ? req.params.pid : 1;
     const products = await Product.find({})
       .select("-images")

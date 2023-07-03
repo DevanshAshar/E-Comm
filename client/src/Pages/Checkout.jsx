@@ -31,7 +31,9 @@ const Checkout = () => {
 
   const fetchCartData = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API}/product/getCart`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API}/product/getCart`
+      );
       const cartData = response.data;
       setAuth((prevAuth) => ({
         ...prevAuth,
@@ -51,22 +53,37 @@ const Checkout = () => {
     }
     setTotalAmount(total);
   };
-  const payment=async()=>{
+  const payment = async () => {
     try {
-        const response=await axios.post(`${process.env.REACT_APP_API}/user/payment`,{amount:totalAmount})
+      const response = await axios.post(
+        `${process.env.REACT_APP_API}/user/payment`,
+        { amount: totalAmount, products: user.cart }
+      );
+      if (response.status === 200) {
         const options = {
-            key: process.env.REACT_APP_RAZORPAY_KEY, 
-            amount: totalAmount*100, 
-            currency: "INR",
-            order_id: response.id,
+          key: process.env.REACT_APP_RAZORPAY_KEY,
+          amount: totalAmount * 100,
+          currency: "INR",
+          order_id: response.id,
+          name:"ElexKart",
+          image:"https://w7.pngwing.com/pngs/798/196/png-transparent-computer-icons-shopping-cart-e-commerce-add-to-cart-button-purple-angle-text.png",
+          theme:{
+            "color":"#A5188B"
+          }
         };
         var rzp1 = new window.Razorpay(options);
-        rzp1.open() 
+        rzp1.open();
+      }
     } catch (error) {
-        console.log(error)
-        toast.error("Transaction Failed")
+      if (error.response && error.response.status === 500) {
+        const { prod } = error.response.data;
+        toast.error(`${prod.prodName} has only ${prod.stock} pieces left`);
+      } else {
+        console.log(error);
+        toast.error("Transaction Failed");
+      }
     }
-  }
+  };
   useEffect(() => {
     getAuth();
   }, []);
@@ -110,10 +127,10 @@ const Checkout = () => {
             )}
           </div>
           <div className="col-md-3">
-          <h4>Total Amount: ₹{totalAmount}</h4>
+            <h4>Total Amount: ₹{totalAmount}</h4>
             <button
               className="btn btn-primary mb-2"
-              style={{ width: "100%",backgroundColor:'green' }}
+              style={{ width: "100%", backgroundColor: "green" }}
               onClick={() => payment()}
             >
               Confirm Order

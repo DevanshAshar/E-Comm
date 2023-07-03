@@ -26,10 +26,6 @@ const prodSchema=new mongoose.Schema({
         contentType:String
     }]
     ,
-    shipping:{
-        type:Boolean,
-        default:false
-    },
     stock:{
         type:Number
     },

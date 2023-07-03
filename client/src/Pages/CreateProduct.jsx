@@ -14,7 +14,6 @@ const CreateProduct = () => {
   const [description, setDescription] = useState();
   const [stock, setStock] = useState();
   const [category, setCategory] = useState();
-  const [shipping, setShipping] = useState();
   const [brand, setBrand] = useState();
   const [price, setPrice] = useState();
   const [rating, setRating] = useState();
@@ -122,21 +121,6 @@ const CreateProduct = () => {
                   className="form-control"
                   onChange={(e) => setStock(e.target.value)}
                 />
-              </div>
-              <div className="mb-3">
-                <Select
-                  bordered={false}
-                  placeholder="Select Shipping"
-                  style={{ textDecoration: "bold" }}
-                  showSearch
-                  className="form-select mb-3"
-                  onChange={(value) => {
-                    setShipping(value);
-                  }}
-                >
-                  <Option value="0">No</Option>
-                  <Option value="1">Yes</Option>
-                </Select>
               </div>
               <div className="mb-3">
                 <label className="btn btn-outline-secondary col-md-12">

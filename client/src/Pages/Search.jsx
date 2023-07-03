@@ -76,7 +76,7 @@ const Search = () => {
                     <p className="card-text">
                       {p.description.substring(0, 30)}...
                     </p>
-                    <p className="card-text">₹{p.price}</p>
+                    <h6 className="card-text" style={{color:'blue',fontWeight:'bold'}}>₹{p.price}</h6>
                     <div className="card-text">
                       {Array.from({ length: 5 }, (_, index) => {
                         if (index < Math.floor(p.rating)) {

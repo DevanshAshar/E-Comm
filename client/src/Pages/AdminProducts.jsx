@@ -42,7 +42,7 @@ const AdminProducts = () => {
                     <div className="card-body">
                       <h5 className="card-title">{p.prodName}</h5>
                       <p className="card-text">{p.description.substring(0,30)}...</p>  
-                      <p className="card-text">₹{p.price}</p>              
+                      <h6 className="card-text" style={{color:'blue',fontWeight:'bold'}}>₹{p.price}</h6>            
                     </div>
                   </div>
                   </Link>
