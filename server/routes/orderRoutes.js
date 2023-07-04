@@ -5,5 +5,5 @@ const {userOrders, invoice, allOrders, updateOrder}=require("../controllers/orde
 router.get('/userOrders',authentication.verifyToken,userOrders)
 router.post('/invoice',authentication.verifyToken,invoice)
 router.get('/allOrders',authentication.admin,allOrders)
-router.patch('/updateOrder',authentication.verifyToken,updateOrder)
+router.patch('/updateOrder',authentication.admin,updateOrder)
 module.exports=router
