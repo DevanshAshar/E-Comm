@@ -29,6 +29,7 @@ This ElexKart Project is a Full Stack project of an electronic e-commerce websit
 
 You can view a live demo of this project [here](https://elexkart.netlify.app/).
 <br/>Please Login/signup to view the whole site
+<br/> (You can login with : testuser@gmail.com , Password:pass@123)
 
 ## Technologies Used
 
